@@ -1,0 +1,121 @@
+service: quiztopia
+
+provider:
+  name: aws
+  runtime: nodejs22.x
+  region: eu-north-1
+
+  environment:
+    QUIZGAME_TABLE: ${env:QUIZGAME_TABLE}
+    JWT_SECRET: ${env:JWT_SECRET}
+
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - dynamodb:PutItem
+        - dynamodb:GetItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+        - dynamodb:Query
+        - dynamodb:Scan
+      Resource:
+      - arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.QUIZGAME_TABLE}
+
+functions:
+  hello:
+    handler: handler.hello
+    events:
+      - http:
+          path: hello
+          method: get
+  
+  signup:
+    handler: functions/signUp/index.handler
+    events:
+      - http:
+          path: signup
+          method: post
+
+  login:
+    handler:  functions/logIn/index.handler
+    events:
+      - http:
+          path: login
+          method: post
+  
+  createQuiz:
+    handler: functions/createQuiz/index.handler
+    events:
+      - http:
+          path: quiz
+          method: post
+
+  # updateQuiz:
+  #   handler: handler.updateQuiz
+  #   events:
+  #     - http:
+  #         path: quiz/{quizId}
+  #         method: put
+
+  deleteQuiz:
+    handler: functions/deleteQuiz/index.handler
+    events:
+      - http:
+          path: quiz/{quizId}
+          method: delete
+    
+  # getQuizById:
+  #   handler: handler.getQuizById
+  #   events:
+  #     - http:
+  #         path: quiz/{quizId}
+  #         method: get
+
+  # getAllQuizzes:
+  #   handler: handler.getAllQuizzes
+  #   events:
+  #     - http:
+  #         path: quizzes
+  #         method: get
+
+  # getAllQuizzesByUser:
+  #   handler: handler.getAllQuizzesByUser
+  #   events:
+  #     - http:
+  #         path: quizzes/user/{userId}
+  #         method: get
+
+  # getAllQuizzesByCoordinates:
+  #   handler: handler.getAllQuizzesByCoordinates
+  #   events:
+  #     - http:
+  #         path: quizzes/location
+  #         method: get
+
+  # addQuestion:
+  #   handler: handler.addQuestion
+  #   events:
+  #     - http:
+  #         path: quiz/{quizId}/question
+  #         method: post
+
+  # updateQuestion:
+  #   handler: handler.updateQuestion
+  #   events:
+  #     - http:
+  #         path: quiz/{quizId}/question/{questionId}
+  #         method: put
+
+  # deleteQuestion:
+  #   handler: handler.deleteQuestion
+  #   events:
+  #     - http:
+  #         path: quiz/{quizId}/question/{questionId}
+  #         method: delete
+
+  # getAllQuestionsByQuizId:
+  #   handler: handler.getAllQuestionsByQuizId
+  #   events:
+  #     - http:
+  #         path: quiz/{quizId}/questions
+  #         method: get
