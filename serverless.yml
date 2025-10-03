@@ -92,26 +92,26 @@ functions:
   #         path: quizzes/location
   #         method: get
 
-  # addQuestion:
-  #   handler: handler.addQuestion
-  #   events:
-  #     - http:
-  #         path: quiz/{quizId}/question
-  #         method: post
+  addQuestion:
+    handler: functions/addQuestiontoQuiz/index.handler
+    events:
+      - http:
+          path: quiz/{quizId}/question
+          method: post
 
-  # updateQuestion:
-  #   handler: handler.updateQuestion
-  #   events:
-  #     - http:
-  #         path: quiz/{quizId}/question/{questionId}
-  #         method: put
+  updateQuestion:
+    handler: functions/updateQuestion/index.handler
+    events:
+      - http:
+          path: quiz/{quizId}/question/{questionId}
+          method: put
 
-  # deleteQuestion:
-  #   handler: handler.deleteQuestion
-  #   events:
-  #     - http:
-  #         path: quiz/{quizId}/question/{questionId}
-  #         method: delete
+  deleteQuestion:
+    handler: functions/deleteQuestion/index.handler
+    events:
+      - http:
+          path: quiz/{quizId}/question/{questionId}
+          method: delete
 
   # getAllQuestionsByQuizId:
   #   handler: handler.getAllQuestionsByQuizId
