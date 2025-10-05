@@ -10,14 +10,29 @@ import { authMiddleware } from "../../middleware/authMiddleware.mjs";
 
 dotenv.config();
 
-export const createQuizFn=async(event)=>{
-    const {title}=event.body;
-    const creatorId=event.user.userId;
+const createQuizFn=async(event)=>{
+    console.log("event.user:", event.user);
 
-    //validate inputs
-    if(!title){
-        return {statusCode:400, body:JSON.stringify({error:"Quiz title is required"})};
+    const {latitude,longitude}=event.body;
+    const {userId, username}=event.user;
+
+    //validate coordinates
+    if(latitude===undefined||longitude===undefined){
+        return {statusCode:400, body:JSON.stringify({error:"Latitude and longitude are required"})};
     }
+
+    const latNum=Number(latitude);
+    const lngNum=Number(longitude);
+
+    if (isNaN(latNum)|| isNaN(lngNum)){
+        return{statusCode:400, body:JSON.stringify({error:"Latitude and longitude must be numbers"})};
+    }
+
+    //round to 2 decimals, around 1.1km precision
+    const latRounded=Math.round(latNum*100)/100;
+    const lngRounded=Math.round(lngNum*100)/100;
+
+
     const quizId=uuid4();
     const createdAt=new Date().toISOString();
 
@@ -27,9 +42,11 @@ export const createQuizFn=async(event)=>{
         SK:"META",
         ItemType:"Quiz",
         quizId,
-        title,
-        creatorId,
-        createdAt
+        title:username,
+        creatorId:userId,
+        latitude:latRounded,
+        longitude:lngRounded,
+        createdAt,
     };
 
     await dynamoDb.send(new PutCommand({TableName:process.env.QUIZGAME_TABLE, Item:quizItem}));
@@ -39,7 +56,12 @@ export const createQuizFn=async(event)=>{
         body:JSON.stringify({
             message:"Quiz created successfully", 
             quizId,
-            title})};
+            title:username,
+            latitude:latRounded,
+            longitude:lngRounded,
+        })};
+   
+
 };
 
 export const handler=middy(createQuizFn)

@@ -19,16 +19,9 @@ provider:
         - dynamodb:Query
         - dynamodb:Scan
       Resource:
-      - arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.QUIZGAME_TABLE}
+      -  arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.QUIZGAME_TABLE}
 
-functions:
-  hello:
-    handler: handler.hello
-    events:
-      - http:
-          path: hello
-          method: get
-  
+functions: 
   signup:
     handler: functions/signUp/index.handler
     events:
@@ -50,50 +43,42 @@ functions:
           path: quiz
           method: post
 
-  # updateQuiz:
-  #   handler: handler.updateQuiz
-  #   events:
-  #     - http:
-  #         path: quiz/{quizId}
-  #         method: put
-
   deleteQuiz:
     handler: functions/deleteQuiz/index.handler
     events:
       - http:
           path: quiz/{quizId}
           method: delete
-    
-  # getQuizById:
-  #   handler: handler.getQuizById
-  #   events:
-  #     - http:
-  #         path: quiz/{quizId}
-  #         method: get
 
-  # getAllQuizzes:
-  #   handler: handler.getAllQuizzes
-  #   events:
-  #     - http:
-  #         path: quizzes
-  #         method: get
+  getQuizByQuizId:
+    handler: functions/getQuizByQuizId/index.handler
+    events:
+      - http:
+          path: quiz/{quizId}
+          method: get
+          
+  getAllQuizzesByUser:
+    handler: functions/getAllQuizzesByUser/index.handler
+    events:
+      - http:
+          path: quizzes/user/{userId}
+          method: get
 
-  # getAllQuizzesByUser:
-  #   handler: handler.getAllQuizzesByUser
-  #   events:
-  #     - http:
-  #         path: quizzes/user/{userId}
-  #         method: get
+  getAllQuizzesByCoordinates:
+    handler: functions/getAllQuizzesByCoordinates/index.handler
+    events:
+      - http:
+          path: quizzes/location
+          method: get
+          request:
+            parameters:
+              querystrings:
+                latitude: true
+                longitude: true
 
-  # getAllQuizzesByCoordinates:
-  #   handler: handler.getAllQuizzesByCoordinates
-  #   events:
-  #     - http:
-  #         path: quizzes/location
-  #         method: get
 
   addQuestion:
-    handler: functions/addQuestiontoQuiz/index.handler
+    handler: functions/addQuestionToQuiz/index.handler
     events:
       - http:
           path: quiz/{quizId}/question
@@ -113,9 +98,11 @@ functions:
           path: quiz/{quizId}/question/{questionId}
           method: delete
 
-  # getAllQuestionsByQuizId:
-  #   handler: handler.getAllQuestionsByQuizId
-  #   events:
-  #     - http:
-  #         path: quiz/{quizId}/questions
-  #         method: get
+  answerQuestion:
+    handler: functions/answerQuestion/index.handler
+    events:
+      - http:
+          path: quiz/{quizId}/question/{questionId}/answer
+          method: post
+
+ 

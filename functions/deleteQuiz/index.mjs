@@ -30,7 +30,7 @@ const deleteQuizFn=async(event)=>{
     //query all items under this quiz (META+OPTION# ?any ANSWERUSER# if present)
     const query=new QueryCommand({
         TableName:process.env.QUIZGAME_TABLE,
-        KeyconditionExpression: "PK"=":PK",
+        KeyconditionExpression: "PK=:PK",
         ExpressionAttributeValues: {
             ":PK": `QUIZ#${quizId}`
         }
@@ -51,7 +51,6 @@ const deleteQuizFn=async(event)=>{
 };
 
 export const handler=middy(deleteQuizFn)
-    .use(jsonBodyParser())
     .use(authMiddleware())
     .use(logger())
     .use(errorHandler())

@@ -33,7 +33,7 @@ const loginFn=async(event)=>{
 
     //generate JWT token
     const token=jwt.sign(
-        {userId:user.userId, email:user.email},
+        {userId:user.userId, email:user.email, username:user.username},
         process.env.JWT_SECRET,
         {expiresIn:"1h"}
     );

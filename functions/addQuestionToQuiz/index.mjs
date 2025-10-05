@@ -5,13 +5,14 @@ import dotenv from "dotenv";
 import jsonBodyParser from "@middy/http-json-body-parser";
 import { authMiddleware } from "../../middleware/authMiddleware.mjs";
 import { errorHandler } from "../../middleware/errorHandler.mjs";
+import {logger} from "../../middleware/logger.mjs"
 import middy from "@middy/core";
 
 dotenv.config();
 
 const addQuestionToQuizFn=async(event)=>{
     const {quizId}=event.pathParameters;
-    const{text, latitude, longitude, options}=event.body;
+    const{text, options}=event.body;
 
     if(!quizId || !text || !options || options.length<2){
         return {
@@ -37,8 +38,6 @@ const addQuestionToQuizFn=async(event)=>{
         SK:`QUESTION#${questionId}`,
         ItemType:"Question",
         text,
-        latitude: Number(latitude),
-        longitude: Number(longitude),
         createdAt: new Date().toISOString(),
     }
 

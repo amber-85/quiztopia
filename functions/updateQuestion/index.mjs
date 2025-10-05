@@ -11,7 +11,7 @@ dotenv.config();
 
 const updateQuestionFn=async(event)=>{
     const {quizId,questionId}=event.pathParameters;
-    const{text,latitude,longitude,options}=event.body;
+    const{text,options}=event.body;
     const userId=event.user.userId;
 
     if(!quizId || !questionId){
@@ -44,8 +44,6 @@ const updateQuestionFn=async(event)=>{
         SK:`QUESTION#${questionId}`,
         ItemType:"Question",
         text,
-        latitude:Number(latitude),
-        longitude:Number(longitude),
         updatedAt:new Date().toISOString(),
     };
 
