@@ -1,6 +1,6 @@
 import middy from "@middy/core";
 import jsonBodyParser from "@middy/http-json-body-parser";
-import {QueryCommand, DeleteCommand, GetCommand} from "@aws-sdk/lib-dynamodb";
+import {QueryCommand, DeleteCommand, GetCommand,ScanCommand} from "@aws-sdk/lib-dynamodb";
 import {dynamoDb} from "../../services/db.mjs";
 import dotenv from "dotenv";
 import {logger} from "../../middleware/logger.mjs";
@@ -18,6 +18,7 @@ const deleteQuizFn=async(event)=>{
         TableName:process.env.QUIZGAME_TABLE,
         Key:{PK: `QUIZ#${quizId}`, SK: "META"}
     }));
+
     const meta=metaRes.Item;
     if(!meta) return {statusCode:404, body:JSON.stringify({error:"Quiz not found"})};
 
@@ -27,8 +28,9 @@ const deleteQuizFn=async(event)=>{
         return {statusCode:403, body:JSON.stringify({error:" Forbidden: only creator can delete quiz"})};
     }
 
-    //query all items under this quiz (META+OPTION# ?any ANSWERUSER# if present)
-    const query=new QueryCommand({
+
+    //query all questions under this quiz 
+    const questionQuery=new QueryCommand({
         TableName:process.env.QUIZGAME_TABLE,
         KeyconditionExpression: "PK=:PK",
         ExpressionAttributeValues: {
@@ -36,17 +38,69 @@ const deleteQuizFn=async(event)=>{
         }
     });
 
-    const items=(await dynamoDb.send(query)).Items || []
+    const questionRes=await dynamoDb.send(questionQuery);
+    const questions=questionRes.Items||[];
 
-    //delete each item
-    for (const it of items){
+    //for each question, delete its options
+    for (const question of questions){
+        if (question.SK.startsWith("QUESTION#")){
+            const questionId=question.SK.split("#")[1];
+
+            const optionQuery=new QueryCommand({
+                TableName:process.env.QUIZGAME_TABLE,
+                KeyCondidtionExpression:"PK=:PK",
+                ExpressionAttributeValues:{
+                    ":PK":`QUIZ#${quizId}#QUESTION#${questionId}`,
+                }
+            });
+
+            const optionRes=await dynamoDb.send(optionQuery);
+            const options=optionRes.Items||[];
+
+            for (const opt of options){
+                await dynamoDb.send(
+                    new DeleteCommand({
+                        TableName:process.env.QUIZGAME_TABLE,
+                        Key: {PK:opt.PK, SK:opt.SK}
+                    })
+                );
+            }
+        }
+    }
+
+    //delete all questions
+    for (const item of questions){
         await dynamoDb.send(new DeleteCommand({
             TableName:process.env.QUIZGAME_TABLE,
-            Key:{PK:it.PK, SK:it.SK}
+            Key:{PK:item.PK, SK:item.SK}
         }));
     }
 
-    return {statusCode:200, body:JSON.stringify({message:"Quiz deleted"})};
+    //delete the quiz META
+
+    await dynamoDb.send(new DeleteCommand({
+        TableName:process.env.QUIZGAME_TABLE,
+        Key:{PK:`QUIZ#${quizId}`, SK:"META"}
+    }));
+
+    //delete all user answers for this quiz
+    const scanAnswers=new ScanCommand({
+        TableName:process.env.QUIZGAME_TABLE,
+        FilterExpression:"begins_with(SK,:prefix)",
+        ExpressionAttributeValues:{":prefix":`ANSWER#${quizId}#`}
+    });
+
+    const answersRes=await dynamoDb.send(scanAnswers);
+    const answers=answersRes.Items||[];
+
+    for (const ans of answers){
+        await dynamoDb.send(new DeleteCommand({
+            TableName:process.env.QUIZGAME_TABLE,
+            Key:{PK:ans.PK,SK:ans.SK}
+        }));
+    }
+
+    return {statusCode:200, body:JSON.stringify({message:"Quiz,questions, options and answers deleted"})};
 
 };
 

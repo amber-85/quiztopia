@@ -11,7 +11,7 @@ import { getAllQuestionsByQuizId } from "../../services/getAllQuestionsByQuizId.
 dotenv.config();
 
 const getAllquizzesByUserFn=async(event)=>{
-    const userId=event.user.userId;
+    const userId=event.pathParameters.userId;
 
     //query all quizzes created by this user
     const quizRes=await dynamoDb.send(new ScanCommand({
@@ -34,7 +34,7 @@ const getAllquizzesByUserFn=async(event)=>{
 };
 
 export const handler=middy(getAllquizzesByUserFn)
-    .use(jsonBodyParser())
+
     .use(authMiddleware())
     .use(logger())
     .use(errorHandler())

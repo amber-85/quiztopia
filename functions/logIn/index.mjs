@@ -46,7 +46,7 @@ const loginFn=async(event)=>{
                 userId:user.userId,
                 username:user.username,
                 email:user.email,
-                total_scores:user.total_scores,
+                // total_scores:user.total_scores,
             },
         }),
     };

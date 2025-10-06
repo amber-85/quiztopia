@@ -11,7 +11,7 @@ export const authMiddleware=()=>{
             throw new createError.Unauthorized("Missing Authorization header");
         }
         try{
-            const decoded=jwt.verify(token.replace("Bearer",""), process.env.JWT_SECRET);
+            const decoded=jwt.verify(token.replace("Bearer","").trim(), process.env.JWT_SECRET);
             request.event.user=decoded; // Attach user info to event
         }catch(error){
             throw new createError.Unauthorized("Invalid or expired token");

@@ -11,14 +11,13 @@ import { authMiddleware } from "../../middleware/authMiddleware.mjs";
 dotenv.config();
 
 const createQuizFn=async(event)=>{
-    console.log("event.user:", event.user);
 
-    const {latitude,longitude}=event.body;
+    const {latitude,longitude,title}=event.body;
     const {userId, username}=event.user;
 
     //validate coordinates
-    if(latitude===undefined||longitude===undefined){
-        return {statusCode:400, body:JSON.stringify({error:"Latitude and longitude are required"})};
+    if(!title||title.trim()=== ""||latitude===undefined||longitude===undefined){
+        return {statusCode:400, body:JSON.stringify({error:"Title, Latitude and longitude are required"})};
     }
 
     const latNum=Number(latitude);
@@ -42,7 +41,8 @@ const createQuizFn=async(event)=>{
         SK:"META",
         ItemType:"Quiz",
         quizId,
-        title:username,
+        creator:username,
+        title:title.trim(),
         creatorId:userId,
         latitude:latRounded,
         longitude:lngRounded,
@@ -56,7 +56,8 @@ const createQuizFn=async(event)=>{
         body:JSON.stringify({
             message:"Quiz created successfully", 
             quizId,
-            title:username,
+            title:title.trim(),
+            creator:username,
             latitude:latRounded,
             longitude:lngRounded,
         })};

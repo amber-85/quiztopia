@@ -91,21 +91,21 @@ const answerQuestionFn=async(event)=>{
         Item:answerItem,
     }));
 
-    //if correct, increment total score
-    if (is_correct){
-        await dynamoDb.send(new UpdateCommand({
-           TableName:process.env.QUIZGAME_TABLE,
-           Key:{
-            PK:`USER#${userId}`,
-            SK:"META",
-           } ,
-           UpdateExpression: "ADD total_scores:inc",
-           ExpressionAttributeValues:{
-            ":inc":5,
-           },
-           ReturnValues:"UPDATED_NEW",
-        }));
-    }
+    // //if correct, increment total score
+    // if (is_correct){
+    //     await dynamoDb.send(new UpdateCommand({
+    //        TableName:process.env.QUIZGAME_TABLE,
+    //        Key:{
+    //         PK:`USER#${userId}`,
+    //         SK:"META",
+    //        } ,
+    //        UpdateExpression: "ADD total_scores:inc",
+    //        ExpressionAttributeValues:{
+    //         ":inc":5,
+    //        },
+    //        ReturnValues:"UPDATED_NEW",
+    //     }));
+    // }
 
     return {
         statusCode:200,
