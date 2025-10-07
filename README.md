@@ -1,34 +1,6 @@
-endpoints
-signup 
-POST - https://jljrod168i.execute-api.eu-north-1.amazonaws.com/dev/signup
+Here is the link to my review and reflections of my code
+https://youtu.be/ouahKSaR14Y
 
-login 
-POST - https://jljrod168i.execute-api.eu-north-1.amazonaws.com/dev/login
 
-create quiz 
-POST - https://jljrod168i.execute-api.eu-north-1.amazonaws.com/dev/quiz
-
-delete quiz 
-DELETE - https://jljrod168i.execute-api.eu-north-1.amazonaws.com/dev/quiz/{quizId}
-
-add question  
-POST - https://jljrod168i.execute-api.eu-north-1.amazonaws.com/dev/quiz/{quizId}/question
-
-update question  
-PUT - https://jljrod168i.execute-api.eu-north-1.amazonaws.com/dev/quiz/{quizId}/question/{questionId}
-
-delete question  
-DELETE - https://jljrod168i.execute-api.eu-north-1.amazonaws.com/dev/quiz/{quizId}/question/{questionId}
-
-get all questions by quizId 
-GET - https://jljrod168i.execute-api.eu-north-1.amazonaws.com/dev/quiz/{quizId}
-
-get all quizzes by userId
-GET - https://jljrod168i.execute-api.eu-north-1.amazonaws.com/dev/quizzes/user/{userId}
-
-Get all quizzes by coordinates
-GET - https://jljrod168i.execute-api.eu-north-1.amazonaws.com/dev/quizzes/location
-
-answer question
-POST - https://jljrod168i.execute-api.eu-north-1.amazonaws.com/dev/quiz/{quizId}/question/{questionId}/answer
-
+The biggest thing I learned from this project is non-relationanl database is impossible to use join like sql database, we should design the database differently.
+Secondly, the syntax is very different among different tech stacks. And typos are very hard to find out. Many errors were caused by these not by incorrect design of the code. 
