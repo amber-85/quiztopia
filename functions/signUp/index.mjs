@@ -50,7 +50,7 @@ const signupFn=async(event)=>{
         username,
         email,
         password:hashedPassword,
-        total_scores:0,
+        // total_scores:0,
         createdAt:new Date().toISOString(),
     };
 

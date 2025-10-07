@@ -32,7 +32,7 @@ const deleteQuizFn=async(event)=>{
     //query all questions under this quiz 
     const questionQuery=new QueryCommand({
         TableName:process.env.QUIZGAME_TABLE,
-        KeyconditionExpression: "PK=:PK",
+        KeyConditionExpression: "PK=:PK",
         ExpressionAttributeValues: {
             ":PK": `QUIZ#${quizId}`
         }
@@ -48,7 +48,7 @@ const deleteQuizFn=async(event)=>{
 
             const optionQuery=new QueryCommand({
                 TableName:process.env.QUIZGAME_TABLE,
-                KeyCondidtionExpression:"PK=:PK",
+                KeyConditionExpression:"PK=:PK",
                 ExpressionAttributeValues:{
                     ":PK":`QUIZ#${quizId}#QUESTION#${questionId}`,
                 }

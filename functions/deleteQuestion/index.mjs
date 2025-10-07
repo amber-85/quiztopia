@@ -66,7 +66,7 @@ const deleteQuestionFn=async(event)=>{
 };
 
 export const handler=middy(deleteQuestionFn)
-    .use(jsonBodyParser())
+
     .use(authMiddleware())
     .use(logger())
     .use(errorHandler())
