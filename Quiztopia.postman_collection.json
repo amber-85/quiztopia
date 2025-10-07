@@ -1,0 +1,270 @@
+{
+	"info": {
+		"_postman_id": "21a79b41-9ad2-419b-9c00-a6eb5efcac7d",
+		"name": "Quiztopia",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "48448925",
+		"_collection_link": "https://blue-capsule-2795050.postman.co/workspace/quiztopia~cbdea1f3-ba58-43f7-ba0f-9cd171adc54e/collection/48448925-21a79b41-9ad2-419b-9c00-a6eb5efcac7d?action=share&source=collection_link&creator=48448925"
+	},
+	"item": [
+		{
+			"name": "Signup",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/signup",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"signup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\":\"test2@test2.com\",\n    \"password\":\"test123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/login",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "creatquiz",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/quiz",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"quiz"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deletequiz",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/quiz/{{quizId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"quiz",
+						"{{quizId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getQuizById",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "addQuestion",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "BearereyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI4OWZlNWZhNi05M2FmLTQ2NmItODlkNy1lZTdiNDc5MDUyOGQiLCJlbWFpbCI6InVzZXIyQHVzZXIyLmNvbSIsInVzZXJuYW1lIjoidXNlcjIiLCJpYXQiOjE3NTk4MjkwMDUsImV4cCI6MTc1OTgzMjYwNX0.W91YLKC9ZP8QjbuUJxuTblvZf1d6iPGabUHKJ1pRcY0",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"text\": \"Which famous cathedral is located on the Île de la Cité in Paris?\",\n  \"options\": [\n    { \"text\": \"Notre-Dame Cathedral\", \"is_correct\": true },\n    { \"text\": \"Sagrada Família\", \"is_correct\": false },\n    { \"text\": \"Westminster Abbey\", \"is_correct\": false },\n    { \"text\": \"St. Peter's Basilica\", \"is_correct\": false }\n  ]\n}\n"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/quiz/{{quizId}}/question",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"quiz",
+						"{{quizId}}",
+						"question"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateQuestion",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "BearereyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI4OWZlNWZhNi05M2FmLTQ2NmItODlkNy1lZTdiNDc5MDUyOGQiLCJlbWFpbCI6InVzZXIyQHVzZXIyLmNvbSIsInVzZXJuYW1lIjoidXNlcjIiLCJpYXQiOjE3NTk4MjkwMDUsImV4cCI6MTc1OTgzMjYwNX0.W91YLKC9ZP8QjbuUJxuTblvZf1d6iPGabUHKJ1pRcY0",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{baseUrl}}/quiz/{{quizId}}/question/{{questionId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"quiz",
+						"{{quizId}}",
+						"question",
+						"{{questionId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete question",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "BearereyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI4OWZlNWZhNi05M2FmLTQ2NmItODlkNy1lZTdiNDc5MDUyOGQiLCJlbWFpbCI6InVzZXIyQHVzZXIyLmNvbSIsInVzZXJuYW1lIjoidXNlcjIiLCJpYXQiOjE3NTk4MjkwMDUsImV4cCI6MTc1OTgzMjYwNX0.W91YLKC9ZP8QjbuUJxuTblvZf1d6iPGabUHKJ1pRcY0",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{baseUrl}}/quiz/{{quizId}}/question/{{questionId}}?",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"quiz",
+						"{{quizId}}",
+						"question",
+						"{{questionId}}"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getAllquizzesByUserId",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/quizzes/user/{{userId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"quizzes",
+						"user",
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getAllQuizzesByCoordinates",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}
